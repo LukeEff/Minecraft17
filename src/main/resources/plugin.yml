@@ -1,0 +1,5 @@
+main: io.github.lukeeff.minecraft17.Minecraft17
+name: Minecraft17
+version: 1.0
+description: Sandbox for testing out small things.
+api-version: 1.17
