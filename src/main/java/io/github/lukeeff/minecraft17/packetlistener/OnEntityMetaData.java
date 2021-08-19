@@ -6,6 +6,7 @@ import com.comphenix.protocol.events.PacketAdapter;
 import com.comphenix.protocol.events.PacketContainer;
 import com.comphenix.protocol.events.PacketEvent;
 import com.comphenix.protocol.wrappers.WrappedWatchableObject;
+import io.github.lukeeff.minecraft17.Logger;
 import io.github.lukeeff.minecraft17.Minecraft17;
 import net.minecraft.world.entity.EntityPose;
 import org.bukkit.Bukkit;
@@ -98,11 +99,11 @@ public class OnEntityMetaData {
     private void modifyPacketData(final PacketContainer packet, final boolean add, final EntityData... data) {
         final List<WrappedWatchableObject> packetContents = packet.getWatchableCollectionModifier().read(0);
         final WrappedWatchableObject bitMaskObjectContainer = packetContents.get(0);
-        if (!(bitMaskObjectContainer.getValue() instanceof Byte)) return;
-        final byte bitMaskData = getNewBitMask(bitMaskObjectContainer, add, data);
-        //Logger.debug(ChatColor.GOLD + "Bitmask: " + bitMaskData);
-        bitMaskObjectContainer.setValue(bitMaskData, true);
-        packet.getWatchableCollectionModifier().write(0, packetContents);
+        if (bitMaskObjectContainer.getIndex() == 0) { // If it is the table index we want to modify.
+            final byte bitMaskData = getNewBitMask(bitMaskObjectContainer, add, data);
+            bitMaskObjectContainer.setValue(bitMaskData, true);
+            packet.getWatchableCollectionModifier().write(0, packetContents);
+        }
     }
 
     /**
